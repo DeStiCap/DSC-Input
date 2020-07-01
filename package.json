@@ -1,0 +1,26 @@
+{
+    "name": "com.dsc.input",
+    "author": "DeStiCap",
+    "displayName": "DSC Input",
+    "version": "0.0.0-preview.1",
+    "unity": "2019.3",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DeStiCap/DSC-Input.git",
+        "revision": "31af3fe5090f187934490430a96452ea5bd03e8a"
+    },
+    "description": "Input system for unity.",
+    "keywords": [
+        "Input"
+    ],
+    "dependencies": {
+        "com.unity.inputsystem": "1.0.0"
+    },
+    "samples": [
+        {
+            "displayName": "Input Template",
+            "description": "Template for game input.",
+            "path": "Samples~/InputTemplate"
+        }
+    ]
+}
