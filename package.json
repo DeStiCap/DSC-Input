@@ -2,12 +2,12 @@
     "name": "com.dsc.input",
     "author": "DeStiCap",
     "displayName": "DSC Input",
-    "version": "0.0.1-preview.1",
+    "version": "0.0.2-preview.1",
     "unity": "2019.3",
     "repository": {
         "type": "git",
         "url": "https://github.com/DeStiCap/DSC-Input.git",
-        "revision": "725b3d5d3e083ce13b4ff2606a2a8ed9b45a759e"
+        "revision": "61e914d4a208b28f78d2f5c1e6bda079ed8555cb"
     },
     "description": "Input system for unity.",
     "keywords": [
