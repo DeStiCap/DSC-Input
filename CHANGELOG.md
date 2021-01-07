@@ -1,3 +1,11 @@
+## [0.1.0-preview.1] - 2021-01-07
+- Change minimum requirement Unity version to 2020.2
+- Change dependency Input System to version 1.0.1
+- Add DSC_InputEventType enum.
+- Move DSC_Input,GameInputData script from DSC-Core package.
+- Move Global_InputManager script and prefab from DSC-Core package.
+- DSC_Input now support event callback during before and after update input.
+
 ## [0.0.2-preview.1] - 2019-07-03
 - Add DSC_Event_RunEventsByInputButton.
 
