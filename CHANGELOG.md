@@ -1,3 +1,6 @@
+## [0.1.1-preview.1] - 2021-02-01
+- Change dependency Input System to version 1.0.2
+
 ## [0.1.0-preview.1] - 2021-01-07
 - Change minimum requirement Unity version to 2020.2
 - Change dependency Input System to version 1.0.1
