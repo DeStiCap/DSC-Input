@@ -1,3 +1,6 @@
+## [0.1.2-preview.1] - 2021-02-03
+- DSC_Input now support input event callback.
+
 ## [0.1.1-preview.1] - 2021-02-01
 - Change dependency Input System to version 1.0.2
 

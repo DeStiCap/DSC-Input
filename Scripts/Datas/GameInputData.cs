@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DSC.Core;
+using DSC.Event;
+using UnityEngine.Events;
 
 namespace DSC.Input
 {
@@ -31,6 +33,11 @@ namespace DSC.Input
             public DirectionType2D m_eLastVerticalTap;
             public float m_fVerticalPressTime;
             public float m_fVerticalReleaseTime;
+
+            public EventCallback<AxisEventType> m_hLeftEvent;
+            public EventCallback<AxisEventType> m_hRightEvent;
+            public EventCallback<AxisEventType> m_hUpEvent;
+            public EventCallback<AxisEventType> m_hDownEvent;
         }
 
         struct InputData
@@ -45,6 +52,7 @@ namespace DSC.Input
         class ButtonData
         {
             public GetInputType m_eGetType;
+            public EventCallback<GetInputType> m_hInputEvent;
         }
 
         #endregion
@@ -64,6 +72,8 @@ namespace DSC.Input
 
 
         #endregion
+
+        #region Init
 
         public GameInputData(int nPlayerNumber)
         {
@@ -113,6 +123,151 @@ namespace DSC.Input
             InitData(nPlayerNumber);
         }
 
+        #endregion
+
+        #region Event
+
+        public void AddAxisEventListener(int nPlayerID, int nAxisID
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
+        {
+            MainAddAxisEventListener(nPlayerID, nAxisID, eDirection, eEvent, hAction);
+        }
+
+        public void AddAxisEventListener(int nPlayerID, int nAxisID
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction
+            , EventOrder eOrder)
+        {
+            MainAddAxisEventListener(nPlayerID, nAxisID, eDirection, eEvent, hAction, eOrder);
+        }
+
+        void MainAddAxisEventListener(int nPlayerID, int nAxisID
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction
+            , EventOrder eOrder = EventOrder.Normal)
+        {
+            if (!HasPlayerID(nPlayerID) || !HasAxisID(nPlayerID, nAxisID))
+                return;
+
+            var hAxis = m_lstPlayerInput[nPlayerID].m_arrAxis[nAxisID];
+
+            switch (eDirection)
+            {
+                case DirectionType2D.Left:
+                    hAxis.m_hLeftEvent ??= new EventCallback<AxisEventType>();
+                    hAxis.m_hLeftEvent.Add(eEvent, hAction);
+                    break;
+
+                case DirectionType2D.Right:
+                    hAxis.m_hRightEvent ??= new EventCallback<AxisEventType>();
+                    hAxis.m_hRightEvent.Add(eEvent, hAction);
+                    break;
+
+                case DirectionType2D.Up:
+                    hAxis.m_hUpEvent ??= new EventCallback<AxisEventType>();
+                    hAxis.m_hUpEvent.Add(eEvent, hAction);
+                    break;
+
+                case DirectionType2D.Down:
+                    hAxis.m_hDownEvent ??= new EventCallback<AxisEventType>();
+                    hAxis.m_hDownEvent.Add(eEvent, hAction);
+                    break;
+            }
+
+            m_lstPlayerInput[nPlayerID].m_arrAxis[nAxisID] = hAxis;
+        }
+
+        public void RemoveAxisEventListener(int nPlayerID, int nAxisID
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
+        {
+            MainRemoveAxisEventListener(nPlayerID, nAxisID, eDirection, eEvent, hAction);
+        }
+
+        void MainRemoveAxisEventListener(int nPlayerID, int nAxisID
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
+        {
+            if (!HasPlayerID(nPlayerID) || !HasAxisID(nPlayerID, nAxisID))
+                return;
+
+            var hAxis = m_lstPlayerInput[nPlayerID].m_arrAxis[nAxisID];
+
+            switch (eDirection)
+            {
+                case DirectionType2D.Left:
+                    hAxis.m_hLeftEvent?.Remove(eEvent, hAction);
+                    break;
+
+                case DirectionType2D.Right:
+                    hAxis.m_hRightEvent?.Remove(eEvent, hAction);
+                    break;
+
+                case DirectionType2D.Up:
+                    hAxis.m_hUpEvent?.Remove(eEvent, hAction);
+                    break;
+
+                case DirectionType2D.Down:
+                    hAxis.m_hDownEvent?.Remove(eEvent, hAction);
+                    break;
+            }
+        }
+
+        public void AddInputEventListener(int nPlayerID, int nButtonID
+            , GetInputType eInput, UnityAction hAction)
+        {
+            MainAddInputEventListener(nPlayerID, nButtonID, eInput, hAction);
+        }
+
+        public void AddInputEventListener(int nPlayerID, int nButtonID
+            , GetInputType eInput, UnityAction hAction, EventOrder eOrder)
+        {
+            MainAddInputEventListener(nPlayerID, nButtonID, eInput, hAction, eOrder);
+        }
+
+        void MainAddInputEventListener(int nPlayerID, int nButtonID
+            , GetInputType eInput, UnityAction hAction
+            , EventOrder eOrder = EventOrder.Normal)
+        {
+            if (!HasPlayerID(nPlayerID))
+                return;
+
+            var hInputData = m_lstPlayerInput[nPlayerID];
+            if (hInputData.m_dicButton.TryGetValue(nButtonID, out ButtonData hButtonData))
+            {
+                hButtonData.m_hInputEvent ??= new EventCallback<GetInputType>();
+                hButtonData.m_hInputEvent.Add(eInput, hAction, eOrder);
+            }
+            else
+            {
+                var hNewEvent = new EventCallback<GetInputType>();
+                hNewEvent.Add(eInput, hAction, eOrder);
+                hInputData.m_dicButton.Add(nButtonID, new ButtonData
+                {
+                    m_eGetType = GetInputType.None,
+                    m_hInputEvent = hNewEvent
+                });
+            }
+        }
+
+        public void RemoveInputEventListener(int nPlayerID, int nButtonID
+            , GetInputType eInput, UnityAction hAction)
+        {
+            MainRemoveInputEventListener(nPlayerID, nButtonID, eInput, hAction);
+        }
+
+        void MainRemoveInputEventListener(int nPlayerID, int nButtonID
+            , GetInputType eInput, UnityAction hAction)
+        {
+            if (!HasPlayerID(nPlayerID))
+                return;
+
+            var hInputData = m_lstPlayerInput[nPlayerID];
+            if (hInputData.m_dicButton.TryGetValue(nButtonID, out ButtonData hButtonData)
+                && hButtonData.m_hInputEvent != null)
+            {
+                hButtonData.m_hInputEvent.Remove(eInput, hAction);
+            }
+        }
+
+        #endregion
+
         #region Main
 
         #region Main - Update
@@ -153,8 +308,30 @@ namespace DSC.Input
                     hInput.m_arrAxis[j] = hAxis;
                 }
 
+                UpdateEventCallback(ref hInput);
+
                 m_lstPlayerInput[i] = hInput;
             }
+
+
+            #region Method
+
+            void UpdateEventCallback(ref InputData hInput)
+            {
+                foreach (var hButton in hInput.m_dicButton)
+                {
+                    var hButtonID = hButton.Key;
+                    var hValue = hButton.Value;
+                    switch (hValue.m_eGetType)
+                    {
+                        case GetInputType.Hold:
+                            hValue.m_hInputEvent?.Run(GetInputType.Hold);
+                            break;
+                    }
+                }
+            }
+
+            #endregion
         }
 
         public void OnLateUpdate()
@@ -301,15 +478,27 @@ namespace DSC.Input
             {
                 var ePrevious = vPreviousAxis.x > 0 ? DirectionType2D.Right : DirectionType2D.Left;
                 var eNext = vAxis.x > 0 ? DirectionType2D.Right : DirectionType2D.Left;
+                bool bRightNext = eNext == DirectionType2D.Right;
+                bool bRightPrevious = ePrevious == DirectionType2D.Right;
 
                 if (vAxis.x != 0 && vPreviousAxis.x == 0)
                 {
                     hAxis.m_eHorizontalPress = eNext;
                     hAxis.m_fHorizontalPressTime = fTime;
 
+                    if (bRightNext)
+                        hAxis.m_hRightEvent?.Run(AxisEventType.Press);
+                    else
+                        hAxis.m_hLeftEvent?.Run(AxisEventType.Press);
+
                     if (hAxis.m_eLastHorizontalTap != 0 && hAxis.m_eLastHorizontalTap == eNext)
                     {
                         hAxis.m_eHorizontalDoublePress = eNext;
+
+                        if (bRightNext)
+                            hAxis.m_hRightEvent?.Run(AxisEventType.DoublePress);
+                        else
+                            hAxis.m_hLeftEvent?.Run(AxisEventType.DoublePress);
                     }
                 }
                 else if (vAxis.x == 0 && vPreviousAxis.x != 0)
@@ -321,10 +510,20 @@ namespace DSC.Input
                         if (hAxis.m_eLastHorizontalTap != 0 && hAxis.m_eLastHorizontalTap == ePrevious)
                         {
                             hAxis.m_eHorizontalDoubleTap = ePrevious;
+
+                            if (bRightPrevious)
+                                hAxis.m_hRightEvent?.Run(AxisEventType.DoubleTap);
+                            else
+                                hAxis.m_hLeftEvent?.Run(AxisEventType.DoubleTap);
                         }
 
                         hAxis.m_eHorizontalTap = ePrevious;
                         hAxis.m_eLastHorizontalTap = ePrevious;
+
+                        if (bRightPrevious)
+                            hAxis.m_hRightEvent?.Run(AxisEventType.Tap);
+                        else
+                            hAxis.m_hLeftEvent?.Run(AxisEventType.Tap);
                     }
                     else
                     {
@@ -337,15 +536,27 @@ namespace DSC.Input
             {
                 var ePrevious = vPreviousAxis.y > 0 ? DirectionType2D.Up : DirectionType2D.Down;
                 var eNext = vAxis.y > 0 ? DirectionType2D.Up : DirectionType2D.Down;
+                bool bUpNext = eNext == DirectionType2D.Up;
+                bool bUpPrevious = ePrevious == DirectionType2D.Up;
 
                 if (vAxis.y != 0 && vPreviousAxis.y == 0)
                 {
                     hAxis.m_eVerticalPress = eNext;
                     hAxis.m_fVerticalPressTime = fTime;
 
+                    if (bUpNext)
+                        hAxis.m_hUpEvent?.Run(AxisEventType.Press);
+                    else
+                        hAxis.m_hDownEvent?.Run(AxisEventType.Press);
+
                     if (hAxis.m_eLastVerticalTap != 0 && hAxis.m_eLastVerticalTap == eNext)
                     {
                         hAxis.m_eVerticalDoublePress = eNext;
+
+                        if (bUpNext)
+                            hAxis.m_hUpEvent?.Run(AxisEventType.DoublePress);
+                        else
+                            hAxis.m_hDownEvent?.Run(AxisEventType.DoublePress);
                     }
                 }
                 else if (vAxis.y == 0 && vPreviousAxis.y != 0)
@@ -357,10 +568,20 @@ namespace DSC.Input
                         if (hAxis.m_eLastVerticalTap != 0 && hAxis.m_eLastVerticalTap == ePrevious)
                         {
                             hAxis.m_eVerticalDoubleTap = ePrevious;
+
+                            if (bUpPrevious)
+                                hAxis.m_hUpEvent?.Run(AxisEventType.DoubleTap);
+                            else
+                                hAxis.m_hDownEvent?.Run(AxisEventType.DoubleTap);
                         }
 
                         hAxis.m_eVerticalTap = ePrevious;
                         hAxis.m_eLastVerticalTap = ePrevious;
+
+                        if (bUpPrevious)
+                            hAxis.m_hUpEvent?.Run(AxisEventType.Tap);
+                        else
+                            hAxis.m_hDownEvent?.Run(AxisEventType.Tap);
                     }
                     else
                     {
@@ -423,17 +644,17 @@ namespace DSC.Input
             return MainGetAnyAxisEvent(eEventType);
         }
 
-        public DirectionType2D GetAnyAxisEvent(AxisEventType eEventType,int nAxisID)
+        public DirectionType2D GetAnyAxisEvent(AxisEventType eEventType, int nAxisID)
         {
             return MainGetAnyAxisEvent(eEventType, nAxisID);
         }
 
-        public DirectionType2D GetAxisEvent(int nPlayerID,AxisEventType eEventType)
+        public DirectionType2D GetAxisEvent(int nPlayerID, AxisEventType eEventType)
         {
             return MainGetAxisEvent(nPlayerID, eEventType);
         }
 
-        public DirectionType2D GetAxisEvent(int nPlayerID, AxisEventType eEventType,int nAxisID)
+        public DirectionType2D GetAxisEvent(int nPlayerID, AxisEventType eEventType, int nAxisID)
         {
             return MainGetAxisEvent(nPlayerID, eEventType, nAxisID);
         }
@@ -489,9 +710,14 @@ namespace DSC.Input
             ResetFlag();
             AddFlag();
 
-            if (hInputData.m_dicButton.TryGetValue(nButtonID, out var hButtonData))
+            if (hInputData.m_dicButton.TryGetValue(nButtonID, out ButtonData hButtonData))
             {
+                // Fixed repeat call input down. 
+                if (hButtonData.m_eGetType == eInput)
+                    goto Finish;
+
                 hButtonData.m_eGetType = eInput;
+                hButtonData.m_hInputEvent?.Run(eInput);
             }
             else
             {
@@ -500,6 +726,8 @@ namespace DSC.Input
                     m_eGetType = eInput
                 });
             }
+
+        Finish:
 
             m_lstPlayerInput[nPlayerID] = hInputData;
 
@@ -964,7 +1192,6 @@ namespace DSC.Input
 
             #endregion
         }
-
 
         #endregion
     }
