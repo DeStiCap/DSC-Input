@@ -387,6 +387,14 @@ namespace DSC.Input
             return m_hBaseInstance.gameInputData.GetAnyRawAxis(nAxisID);
         }
 
+        public static Vector2 GetRawAxis()
+        {
+            if (!HasBaseInstance())
+                return Vector2.zero;
+
+            return m_hBaseInstance.gameInputData.GetRawAxis(0);
+        }
+
         public static Vector2 GetRawAxis(int nPlayerID)
         {
             if (!HasBaseInstance())
@@ -401,6 +409,14 @@ namespace DSC.Input
                 return Vector2.zero;
 
             return m_hBaseInstance.gameInputData.GetRawAxis(nPlayerID, nAxisID);
+        }
+
+        public static void SetRawAxis(Vector2 vAxis)
+        {
+            if (!HasBaseInstance())
+                return;
+
+            m_hBaseInstance.gameInputData.SetRawAxis(0, vAxis);
         }
 
         public static void SetRawAxis(int nPlayerID, Vector2 vAxis)
@@ -433,6 +449,14 @@ namespace DSC.Input
                 return Vector2.zero;
 
             return m_hBaseInstance.gameInputData.GetAnyAxis(nAxisID);
+        }
+
+        public static Vector2 GetAxis()
+        {
+            if (!HasBaseInstance())
+                return Vector2.zero;
+
+            return m_hBaseInstance.gameInputData.GetAxis(0);
         }
 
         public static Vector2 GetAxis(int nPlayerID)
