@@ -128,19 +128,6 @@ namespace DSC.Input
         #region Event
 
         public void AddAxisEventListener(int nPlayerID, int nAxisID
-            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
-        {
-            MainAddAxisEventListener(nPlayerID, nAxisID, eDirection, eEvent, hAction);
-        }
-
-        public void AddAxisEventListener(int nPlayerID, int nAxisID
-            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction
-            , EventOrder eOrder)
-        {
-            MainAddAxisEventListener(nPlayerID, nAxisID, eDirection, eEvent, hAction, eOrder);
-        }
-
-        void MainAddAxisEventListener(int nPlayerID, int nAxisID
             , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction
             , EventOrder eOrder = EventOrder.Normal)
         {
@@ -176,13 +163,8 @@ namespace DSC.Input
         }
 
         public void RemoveAxisEventListener(int nPlayerID, int nAxisID
-            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
-        {
-            MainRemoveAxisEventListener(nPlayerID, nAxisID, eDirection, eEvent, hAction);
-        }
-
-        void MainRemoveAxisEventListener(int nPlayerID, int nAxisID
-            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction
+            , EventOrder eOrder = EventOrder.Normal)
         {
             if (!HasPlayerID(nPlayerID) || !HasAxisID(nPlayerID, nAxisID))
                 return;
@@ -192,38 +174,25 @@ namespace DSC.Input
             switch (eDirection)
             {
                 case DirectionType2D.Left:
-                    hAxis.m_hLeftEvent?.Remove(eEvent, hAction);
+                    hAxis.m_hLeftEvent?.Remove(eEvent, hAction, eOrder);
                     break;
 
                 case DirectionType2D.Right:
-                    hAxis.m_hRightEvent?.Remove(eEvent, hAction);
+                    hAxis.m_hRightEvent?.Remove(eEvent, hAction, eOrder);
                     break;
 
                 case DirectionType2D.Up:
-                    hAxis.m_hUpEvent?.Remove(eEvent, hAction);
+                    hAxis.m_hUpEvent?.Remove(eEvent, hAction, eOrder);
                     break;
 
                 case DirectionType2D.Down:
-                    hAxis.m_hDownEvent?.Remove(eEvent, hAction);
+                    hAxis.m_hDownEvent?.Remove(eEvent, hAction, eOrder);
                     break;
             }
         }
 
         public void AddInputEventListener(int nPlayerID, int nButtonID
-            , GetInputType eInput, UnityAction hAction)
-        {
-            MainAddInputEventListener(nPlayerID, nButtonID, eInput, hAction);
-        }
-
-        public void AddInputEventListener(int nPlayerID, int nButtonID
-            , GetInputType eInput, UnityAction hAction, EventOrder eOrder)
-        {
-            MainAddInputEventListener(nPlayerID, nButtonID, eInput, hAction, eOrder);
-        }
-
-        void MainAddInputEventListener(int nPlayerID, int nButtonID
-            , GetInputType eInput, UnityAction hAction
-            , EventOrder eOrder = EventOrder.Normal)
+            , GetInputType eInput, UnityAction hAction, EventOrder eOrder = EventOrder.Normal)
         {
             if (!HasPlayerID(nPlayerID))
                 return;
@@ -247,13 +216,7 @@ namespace DSC.Input
         }
 
         public void RemoveInputEventListener(int nPlayerID, int nButtonID
-            , GetInputType eInput, UnityAction hAction)
-        {
-            MainRemoveInputEventListener(nPlayerID, nButtonID, eInput, hAction);
-        }
-
-        void MainRemoveInputEventListener(int nPlayerID, int nButtonID
-            , GetInputType eInput, UnityAction hAction)
+            , GetInputType eInput, UnityAction hAction, EventOrder eOrder = EventOrder.Normal)
         {
             if (!HasPlayerID(nPlayerID))
                 return;
@@ -262,7 +225,7 @@ namespace DSC.Input
             if (hInputData.m_dicButton.TryGetValue(nButtonID, out ButtonData hButtonData)
                 && hButtonData.m_hInputEvent != null)
             {
-                hButtonData.m_hInputEvent.Remove(eInput, hAction);
+                hButtonData.m_hInputEvent.Remove(eInput, hAction, eOrder);
             }
         }
 

@@ -50,6 +50,34 @@ namespace DSC.Input
             inputEvent?.Remove(eEvent, hAction);
         }
 
+        /// <summary>
+        /// Add axis event listener to player id 0.
+        /// </summary>
+        /// <param name="nAxisID"></param>
+        /// <param name="eDirection"></param>
+        /// <param name="eEvent"></param>
+        /// <param name="hAction"></param>
+        public static void AddAxisEventListener(int nAxisID
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
+        {
+            MainAddAxisEventListener(0, nAxisID, eDirection, eEvent, hAction);
+        }
+
+        /// <summary>
+        /// Add axis event listener to player id 0.
+        /// </summary>
+        /// <param name="nAxisID"></param>
+        /// <param name="eDirection"></param>
+        /// <param name="eEvent"></param>
+        /// <param name="hAction"></param>
+        /// <param name="eOrder"></param>
+        public static void AddAxisEventListener(int nAxisID
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction
+            , EventOrder eOrder)
+        {
+            MainAddAxisEventListener(0, nAxisID, eDirection, eEvent, hAction, eOrder);
+        }
+
         public static void AddAxisEventListener(int nPlayerID, int nAxisID
             , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
         {
@@ -74,21 +102,83 @@ namespace DSC.Input
                 .AddAxisEventListener(nPlayerID, nAxisID, eDirection, eEvent, hAction, eOrder);
         }
 
+        /// <summary>
+        /// Remove axis event listener from player id 0.
+        /// </summary>
+        /// <param name="nAxisID"></param>
+        /// <param name="eDirection"></param>
+        /// <param name="eEvent"></param>
+        /// <param name="hAction"></param>
+        public static void RemoveAxisEventListener(int nAxisID
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
+        {
+            MainRemoveAxisEventListener(0, nAxisID, eDirection, eEvent, hAction);
+        }
+
+        /// <summary>
+        /// Remove axis event listener from player id 0.
+        /// </summary>
+        /// <param name="nAxisID"></param>
+        /// <param name="eDirection"></param>
+        /// <param name="eEvent"></param>
+        /// <param name="hAction"></param>
+        /// <param name="eOrder"></param>
+        public static void RemoveAxisEventListener(int nAxisID
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction
+            , EventOrder eOrder)
+        {
+            MainRemoveAxisEventListener(0, nAxisID, eDirection, eEvent, hAction, eOrder);
+        }
+
         public static void RemoveAxisEventListener(int nPlayerID, int nAxisID
             , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
         {
             MainRemoveAxisEventListener(nPlayerID, nAxisID, eDirection, eEvent, hAction);
         }
 
+        public static void RemoveAxisEventListener(int nPlayerID, int nAxisID
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction
+            , EventOrder eOrder)
+        {
+            MainRemoveAxisEventListener(nPlayerID, nAxisID, eDirection, eEvent, hAction, eOrder);
+        }
+
         static void MainRemoveAxisEventListener(int nPlayerID, int nAxisID
-            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction)
+            , DirectionType2D eDirection, AxisEventType eEvent, UnityAction hAction
+            , EventOrder eOrder = EventOrder.Normal)
         {
             if (m_hBaseInstance == null)
                 return;
 
             m_hBaseInstance.gameInputData
-                .RemoveAxisEventListener(nPlayerID,nAxisID,eDirection,eEvent,hAction);
+                .RemoveAxisEventListener(nPlayerID, nAxisID, eDirection, eEvent, hAction, eOrder);
         }
+
+        /// <summary>
+        /// Add input event listener for player id 0.
+        /// </summary>
+        /// <param name="nButtonID"></param>
+        /// <param name="eInput"></param>
+        /// <param name="hAction"></param>
+        public static void AddInputEventListener(int nButtonID
+            , GetInputType eInput, UnityAction hAction)
+        {
+            MainAddInputEventListener(0, nButtonID, eInput, hAction);
+        }
+
+        /// <summary>
+        /// Add input event listener for player id 0.
+        /// </summary>
+        /// <param name="nButtonID"></param>
+        /// <param name="eInput"></param>
+        /// <param name="hAction"></param>
+        /// <param name="eOrder"></param>
+        public static void AddInputEventListener(int nButtonID
+            , GetInputType eInput, UnityAction hAction, EventOrder eOrder)
+        {
+            MainAddInputEventListener(0, nButtonID, eInput, hAction, eOrder);
+        }
+
 
         public static void AddInputEventListener(int nPlayerID, int nButtonID
             , GetInputType eInput, UnityAction hAction)
@@ -102,6 +192,40 @@ namespace DSC.Input
             MainAddInputEventListener(nPlayerID, nButtonID, eInput, hAction, eOrder);
         }
 
+        public static void AddInputEventListener(int nButtonID
+            , UnityAction hDownAction, UnityAction hHoldAction, UnityAction hUpAction)
+        {
+            MainAddInputEventListener(0, nButtonID, GetInputType.Down, hDownAction);
+            MainAddInputEventListener(0, nButtonID, GetInputType.Hold, hHoldAction);
+            MainAddInputEventListener(0, nButtonID, GetInputType.Up, hUpAction);
+        }
+
+        public static void AddInputEventListener(int nButtonID
+            , UnityAction hDownAction, UnityAction hHoldAction, UnityAction hUpAction
+            , EventOrder eOrder)
+        {
+            MainAddInputEventListener(0, nButtonID, GetInputType.Down, hDownAction, eOrder);
+            MainAddInputEventListener(0, nButtonID, GetInputType.Hold, hHoldAction, eOrder);
+            MainAddInputEventListener(0, nButtonID, GetInputType.Up, hUpAction, eOrder);
+        }
+
+        public static void AddInputEventListener(int nPlayerID, int nButtonID
+            , UnityAction hDownAction, UnityAction hHoldAction, UnityAction hUpAction)
+        {
+            MainAddInputEventListener(nPlayerID, nButtonID, GetInputType.Down, hDownAction);
+            MainAddInputEventListener(nPlayerID, nButtonID, GetInputType.Hold, hHoldAction);
+            MainAddInputEventListener(nPlayerID, nButtonID, GetInputType.Up, hUpAction);
+        }
+
+        public static void AddInputEventListener(int nPlayerID, int nButtonID
+            , UnityAction hDownAction, UnityAction hHoldAction, UnityAction hUpAction
+            , EventOrder eOrder)
+        {
+            MainAddInputEventListener(nPlayerID, nButtonID, GetInputType.Down, hDownAction, eOrder);
+            MainAddInputEventListener(nPlayerID, nButtonID, GetInputType.Hold, hHoldAction, eOrder);
+            MainAddInputEventListener(nPlayerID, nButtonID, GetInputType.Up, hUpAction, eOrder);
+        }
+
         static void MainAddInputEventListener(int nPlayerID, int nButtonID
             , GetInputType eInput, UnityAction hAction, EventOrder eOrder = EventOrder.Normal)
         {
@@ -111,14 +235,80 @@ namespace DSC.Input
             m_hBaseInstance.gameInputData.AddInputEventListener(nPlayerID, nButtonID, eInput, hAction, eOrder);
         }
 
+        /// <summary>
+        /// Remove input event listener from player id 0.
+        /// </summary>
+        /// <param name="nButtonID"></param>
+        /// <param name="eInput"></param>
+        /// <param name="hAction"></param>
+        public static void RemoveInputEventListener(int nButtonID
+                    , GetInputType eInput, UnityAction hAction)
+        {
+            MainRemoveInputEventListener(0, nButtonID, eInput, hAction);
+        }
+
+        /// <summary>
+        /// Remove input event listener from player id 0.
+        /// </summary>
+        /// <param name="nButtonID"></param>
+        /// <param name="eInput"></param>
+        /// <param name="hAction"></param>
+        /// <param name="eOrder"></param>
+        public static void RemoveInputEventListener(int nButtonID
+                    , GetInputType eInput, UnityAction hAction, EventOrder eOrder)
+        {
+            MainRemoveInputEventListener(0, nButtonID, eInput, hAction, eOrder);
+        }
+
+
         public static void RemoveInputEventListener(int nPlayerID, int nButtonID
             , GetInputType eInput, UnityAction hAction)
         {
             MainRemoveInputEventListener(nPlayerID, nButtonID, eInput, hAction);
         }
 
+        public static void RemoveInputEventListener(int nPlayerID, int nButtonID
+            , GetInputType eInput, UnityAction hAction, EventOrder eOrder)
+        {
+            MainRemoveInputEventListener(nPlayerID, nButtonID, eInput, hAction, eOrder);
+        }
+
+        public static void RemoveInputEventListener(int nButtonID
+            , UnityAction hDownAction, UnityAction hHoldAction, UnityAction hUpAction)
+        {
+            MainRemoveInputEventListener(0, nButtonID, GetInputType.Down, hDownAction);
+            MainRemoveInputEventListener(0, nButtonID, GetInputType.Hold, hHoldAction);
+            MainRemoveInputEventListener(0, nButtonID, GetInputType.Up, hUpAction);
+        }
+
+        public static void RemoveInputEventListener(int nButtonID
+            , UnityAction hDownAction, UnityAction hHoldAction, UnityAction hUpAction
+            , EventOrder eOrder)
+        {
+            MainRemoveInputEventListener(0, nButtonID, GetInputType.Down, hDownAction, eOrder);
+            MainRemoveInputEventListener(0, nButtonID, GetInputType.Hold, hHoldAction, eOrder);
+            MainRemoveInputEventListener(0, nButtonID, GetInputType.Up, hUpAction, eOrder);
+        }
+
+        public static void RemoveInputEventListener(int nPlayerID, int nButtonID
+            , UnityAction hDownAction, UnityAction hHoldAction, UnityAction hUpAction)
+        {
+            MainRemoveInputEventListener(nPlayerID, nButtonID, GetInputType.Down, hDownAction);
+            MainRemoveInputEventListener(nPlayerID, nButtonID, GetInputType.Hold, hHoldAction);
+            MainRemoveInputEventListener(nPlayerID, nButtonID, GetInputType.Up, hUpAction);
+        }
+
+        public static void RemoveInputEventListener(int nPlayerID, int nButtonID
+            , UnityAction hDownAction, UnityAction hHoldAction, UnityAction hUpAction
+            , EventOrder eOrder)
+        {
+            MainRemoveInputEventListener(nPlayerID, nButtonID, GetInputType.Down, hDownAction, eOrder);
+            MainRemoveInputEventListener(nPlayerID, nButtonID, GetInputType.Hold, hHoldAction, eOrder);
+            MainRemoveInputEventListener(nPlayerID, nButtonID, GetInputType.Up, hUpAction, eOrder);
+        }
+
         static void MainRemoveInputEventListener(int nPlayerID, int nButtonID
-            , GetInputType eInput, UnityAction hAction)
+            , GetInputType eInput, UnityAction hAction, EventOrder eOrder = EventOrder.Normal)
         {
             if (m_hBaseInstance == null)
                 return;

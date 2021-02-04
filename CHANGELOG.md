@@ -1,3 +1,6 @@
+## [0.1.3-preview.1] - 2021-02-04
+- Add Add/Remove input event listener for whole down/hold/up event in one method.
+
 ## [0.1.2-preview.1] - 2021-02-03
 - DSC_Input now support input event callback.
 
