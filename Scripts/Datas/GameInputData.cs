@@ -982,7 +982,7 @@ namespace DSC.Input
 
         bool HasPlayerID(int nPlayerID)
         {
-            if (nPlayerID < 0 && nPlayerID >= m_lstPlayerInput.Count)
+            if (nPlayerID < 0 || nPlayerID >= m_lstPlayerInput.Count)
             {
                 Debug.LogError("Can't get button input by " + nPlayerID + " player ID");
                 return false;

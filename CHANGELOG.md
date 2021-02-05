@@ -1,3 +1,6 @@
+## [0.1.4-preview.1] - 2021-02-05
+- Fix bug error if call input player id more than init player number.
+
 ## [0.1.3-preview.2] - 2021-02-04
 - Add Add/Remove input event listener for whole down/hold/up event in one method.
 
