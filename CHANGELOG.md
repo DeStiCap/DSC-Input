@@ -1,3 +1,8 @@
+## [0.2.0-preview.1] - 2021-04-19
+- Change minimum requirement Unity version to 2020.3
+- Add DSC_Input_Multiplayer script.
+- Add InputButtonName script.
+
 ## [0.1.4-preview.1] - 2021-02-05
 - Fix bug error if call input player id more than init player number.
 

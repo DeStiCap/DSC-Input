@@ -49,7 +49,7 @@ namespace DSC.Template
 
         #endregion
 
-        #region Base - Mono
+        #region Unity
 
         private void Awake()
         {

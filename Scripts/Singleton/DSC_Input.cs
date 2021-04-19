@@ -22,7 +22,44 @@ namespace DSC.Input
 
         #endregion
 
-        #region Base - Event
+        #region Main
+
+        #region Init
+
+        public static void InitInput(int nPlayerNumber)
+        {
+            MainInitInput(nPlayerNumber);
+        }
+
+        public static void InitInput(int nPlayerNumber, int nAxisNumber)
+        {
+            MainInitInput(nPlayerNumber, nAxisNumber);
+        }
+
+        public static void InitInput(int nPlayerNumber, float fSensitivity, float fGravity)
+        {
+            MainInitInput(nPlayerNumber, 2, fSensitivity, fGravity);
+        }
+
+        public static void InitInput(int nPlayerNumber, int nAxisNumber, float fSensitivity, float fGravity)
+        {
+            MainInitInput(nPlayerNumber, nAxisNumber, fSensitivity, fGravity);
+        }
+
+        static void MainInitInput(int nPlayerNumber, int nAxisNumber = 2, float fSensitivity = 3f, float fGravity = 3f)
+        {
+            if (!HasBaseInstance())
+                return;
+
+            if (!m_hBaseInstance.gameInputData.isCreate)
+                m_hBaseInstance.gameInputData = new GameInputData(nPlayerNumber, nAxisNumber, fSensitivity, fGravity);
+            else
+                m_hBaseInstance.gameInputData.ChangePlayerNumber(nPlayerNumber);
+        }
+
+        #endregion
+
+        #region Events
 
         public static void AddEventListener(DSC_InputEventType eEvent, UnityAction<GameInputData> hAction)
         {
@@ -314,43 +351,6 @@ namespace DSC.Input
                 return;
 
             m_hBaseInstance.gameInputData.RemoveInputEventListener(nPlayerID, nButtonID, eInput, hAction);
-        }
-
-        #endregion
-
-        #region Base - Main
-
-        #region Init
-
-        public static void InitInput(int nPlayerNumber)
-        {
-            MainInitInput(nPlayerNumber);
-        }
-
-        public static void InitInput(int nPlayerNumber, int nAxisNumber)
-        {
-            MainInitInput(nPlayerNumber, nAxisNumber);
-        }
-
-        public static void InitInput(int nPlayerNumber, float fSensitivity, float fGravity)
-        {
-            MainInitInput(nPlayerNumber, 2, fSensitivity, fGravity);
-        }
-
-        public static void InitInput(int nPlayerNumber, int nAxisNumber, float fSensitivity, float fGravity)
-        {
-            MainInitInput(nPlayerNumber, nAxisNumber, fSensitivity, fGravity);
-        }
-
-        static void MainInitInput(int nPlayerNumber, int nAxisNumber = 2, float fSensitivity = 3f, float fGravity = 3f)
-        {
-            if (!HasBaseInstance())
-                return;
-
-            if (!m_hBaseInstance.gameInputData.isCreate)
-                m_hBaseInstance.gameInputData = new GameInputData(nPlayerNumber, nAxisNumber, fSensitivity, fGravity);
-            else
-                m_hBaseInstance.gameInputData.ChangePlayerNumber(nPlayerNumber);
         }
 
         #endregion

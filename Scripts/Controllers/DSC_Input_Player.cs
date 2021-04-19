@@ -16,7 +16,7 @@ namespace DSC.Input
 
         #endregion
 
-        #region Base - Mono
+        #region Unity
 
         private void Awake()
         {
@@ -25,6 +25,8 @@ namespace DSC.Input
         }
 
         #endregion
+
+        #region Main
 
         #region Events
 
@@ -127,6 +129,8 @@ namespace DSC.Input
         {
             DSC_Input.SetButtonInput(m_nPlayerID, (int)InputButtonType.Cancel, hValue.ReadValueAsButton());
         }
+
+        #endregion
 
         #endregion
     }
